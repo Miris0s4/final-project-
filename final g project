@@ -1,0 +1,65 @@
+# Function to input employee data
+def input_employee_data():
+    first_name = input("Enter first name: ")
+    last_name = input("Enter last name: ")
+    employee_id = input("Enter employee ID: ")
+    num_dependents = int(input("Enter number of dependents: "))
+    hours_worked = float(input("Enter hours worked: "))
+    return first_name, last_name, employee_id, num_dependents, hours_worked
+
+# Function to retrieve hourly rate from a database
+def get_hourly_rate(employee_id):
+    # Simulated database of hourly rates
+    hourly_rates = {
+        'E001': 20.0,
+        'E002': 22.5,
+        'E003': 18.75
+    }
+    return hourly_rates.get(employee_id, 0)
+
+# Function to calculate pay
+def calculate_pay(hours_worked, hourly_rate):
+    if hours_worked <= 40:
+        regular_pay = hours_worked * hourly_rate
+        overtime_pay = 0
+    else:
+        regular_pay = 40 * hourly_rate
+        overtime_pay = (hours_worked - 40) * hourly_rate * 1.5
+    gross_pay = regular_pay + overtime_pay
+    return gross_pay
+
+# Function to calculate dependents allowance
+def calculate_dependents_allowance(num_dependents):
+    return num_dependents * 25
+
+# Function to calculate taxes
+def calculate_taxes(gross_pay):
+    state_tax = gross_pay * 0.056
+    federal_tax = gross_pay * 0.079
+    return state_tax, federal_tax
+
+# Function to calculate pre-tax and post-tax amounts
+def calculate_amounts(gross_pay, dependents_allowance, state_tax, federal_tax):
+    pre_tax_amount = gross_pay - dependents_allowance
+    post_tax_amount = pre_tax_amount - (state_tax + federal_tax)
+    return pre_tax_amount, post_tax_amount
+
+# Function to output results
+def output_results(first_name, last_name, employee_id, gross_pay, pre_tax_amount, post_tax_amount):
+    print(f"Employee: {first_name} {last_name} (ID: {employee_id})")
+    print(f"Gross Pay: ${gross_pay:.2f}")
+    print(f"Pre-Tax Amount: ${pre_tax_amount:.2f}")
+    print(f"Post-Tax Amount: ${post_tax_amount:.2f}")
+
+# Main program
+def main():
+    first_name, last_name, employee_id, num_dependents, hours_worked = input_employee_data()
+    hourly_rate = get_hourly_rate(employee_id)
+    gross_pay = calculate_pay(hours_worked, hourly_rate)
+    dependents_allowance = calculate_dependents_allowance(num_dependents)
+    state_tax, federal_tax = calculate_taxes(gross_pay)
+    pre_tax_amount, post_tax_amount = calculate_amounts(gross_pay, dependents_allowance, state_tax, federal_tax)
+    output_results(first_name, last_name, employee_id, gross_pay, pre_tax_amount, post_tax_amount)
+
+if __name__ == "__main__":
+    main()
