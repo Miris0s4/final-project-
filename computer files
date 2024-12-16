@@ -1,0 +1,30 @@
+// Declare files
+DECLARE GeraldineFile, GerardFile, UnifiedFile
+
+// Open files
+OPEN GeraldineFile FOR READING
+OPEN GerardFile FOR READING
+OPEN UnifiedFile FOR WRITING
+
+// Read records from GeraldineFile
+WHILE NOT EOF(GeraldineFile)
+    READ GeraldineFile INTO GeraldineRecord
+    // Check for duplicate customer number
+    IF NOT EXISTS IN UnifiedFile (GeraldineRecord.CustomerNumber)
+        WRITE GeraldineRecord TO UnifiedFile
+    END IF
+END WHILE
+
+// Read records from GerardFile
+WHILE NOT EOF(GerardFile)
+    READ GerardFile INTO GerardRecord
+    // Check for duplicate customer number
+    IF NOT EXISTS IN UnifiedFile (GerardRecord.CustomerNumber)
+        WRITE GerardRecord TO UnifiedFile
+    END IF
+END WHILE
+
+// Close files
+CLOSE GeraldineFile
+CLOSE GerardFile
+CLOSE UnifiedFile
