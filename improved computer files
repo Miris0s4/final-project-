@@ -1,0 +1,33 @@
+// Declare files for reading and writing customer records
+DECLARE GeraldineFile, GerardFile, UnifiedFile
+
+// Open files for reading and writing
+OPEN GeraldineFile FOR READING
+OPEN GerardFile FOR READING
+OPEN UnifiedFile FOR WRITING
+
+// Read and process records from GeraldineFile
+WHILE NOT EOF(GeraldineFile)
+    READ GeraldineFile INTO GeraldineRecord
+    // Check if the customer number already exists in UnifiedFile
+    IF NOT EXISTS IN UnifiedFile (GeraldineRecord.CustomerNumber)
+        // Write the record to UnifiedFile if it does not exist
+        WRITE GeraldineRecord TO UnifiedFile
+    END IF
+END WHILE
+
+// Read and process records from GerardFile
+WHILE NOT EOF(GerardFile)
+    READ GerardFile INTO GerardRecord
+    // Check if the customer number already exists in UnifiedFile
+    IF NOT EXISTS IN UnifiedFile (GerardRecord.CustomerNumber)
+        // Write the record to UnifiedFile if it does not exist
+        WRITE GerardRecord TO UnifiedFile
+    END IF
+END WHILE
+
+// Close all files
+CLOSE GeraldineFile
+CLOSE GerardFile
+CLOSE UnifiedFile
+return 
